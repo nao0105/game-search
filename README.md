@@ -1,33 +1,44 @@
 # Game Scout
 
-RAWG APIを利用したゲーム検索ウェブアプリです。Next.js App Routerで構築しています。
+RAWG APIを使ってゲームを検索できるNext.jsアプリです。検索語を入力すると、ゲーム画像、発売日、評価、対応プラットフォームなどを表示します。RAWG APIキーはサーバー側のAPI Routeで使用し、ブラウザーには公開しません。
 
-## はじめかた
+## 必要なもの
 
-1. [RAWG API](https://rawg.io/apidocs) でAPIキーを取得します。
-2. `.env.example` を `.env.local` にコピーし、取得したキーを設定します。
+- Node.js 20以上
+- RAWG APIキー（[RAWG API](https://rawg.io/apidocs)から取得）
+
+## セットアップ
+
+```bash
+npm install
+cp .env.example .env.local
+```
+
+`.env.local`を開き、取得したキーを設定してください。
 
 ```env
 RAWG_API_KEY=取得したAPIキー
 ```
 
-3. Node.jsをインストールし、依存関係を入れて開発サーバーを起動します。
+`.env.local`はGit管理対象外です。APIキーをソースコードやチャット、公開リポジトリに貼り付けないでください。
+
+## 開発サーバー
 
 ```bash
-npm install
 npm run dev
 ```
 
-ブラウザーで http://localhost:3000 を開いてください。
+ブラウザーで http://localhost:3000 を開きます。
 
-APIキーはサーバー側の `/api/games` からのみ利用するため、フロントエンドのコードには含まれません。`.env.local` はGitにコミットしないでください。デプロイ時はホスティングサービスの環境変数に `RAWG_API_KEY` を設定してください。
+## API
 
-## 機能
+`GET /api/games?q=<検索語>` はRAWGのゲーム検索をサーバー側で呼び出し、最大20件を返します。キー未設定時は設定方法を案内するエラーを返します。
 
-- RAWGゲームデータベースのタイトル検索
-- 評価、発売日、ジャンル、Metacriticスコアの表示
-- 追加結果の読み込み
-- RAWG APIキー未設定時やAPIエラー時の案内
-- RAWGのデータおよび画像を利用しているページにRAWGへのリンクを表示
+## ビルド
 
-RAWGのAPIおよび利用条件については[公式ドキュメント](https://rawg.io/apidocs)を確認してください。
+```bash
+npm run lint
+npm run build
+```
+
+デプロイ時はホスティングサービスの環境変数設定にも`RAWG_API_KEY`を登録してください。ゲームデータはRAWG提供です。
